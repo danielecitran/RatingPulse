@@ -18,6 +18,21 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "company_name", nullable = false)
+    private String companyName;
+
+    @Column(name = "street")
+    private String street;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "website")
+    private String website;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

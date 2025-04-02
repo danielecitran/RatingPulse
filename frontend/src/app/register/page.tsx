@@ -31,7 +31,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/register', {
+      const response = await fetch('http://localhost:8080/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,13 +49,12 @@ export default function RegisterPage() {
 
       const data = await response.json();
       
-      // Wenn der Server einen Token zurückgibt, speichern wir ihn
+      // Token speichern und zur Unternehmensdetails-Seite weiterleiten
       if (data.token) {
         setCookie('token', data.token, 7);
-        router.push('/dashboard');
+        router.push('/company-details');
       } else {
-        // Ansonsten zum Login weiterleiten
-        router.push('/login');
+        setError('Registrierung fehlgeschlagen: Kein Token erhalten');
       }
     } catch (err) {
       setError('Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.');

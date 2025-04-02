@@ -16,9 +16,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(String email, String password) {
+    public User registerUser(String email, String password, String companyName) {
         validateEmail(email);
         validatePassword(password);
+        validateCompanyName(companyName);
         
         String normalizedEmail = normalizeEmail(email);
         if (userRepository.existsByEmail(normalizedEmail)) {
@@ -29,6 +30,7 @@ public class UserService {
             User user = new User();
             user.setEmail(normalizedEmail);
             user.setPassword(passwordEncoder.encode(password));
+            user.setCompanyName(companyName);
             return userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Benutzer mit dieser E-Mail existiert bereits");
@@ -108,5 +110,30 @@ public class UserService {
         if (trimmedPassword.length() > 72) {
             throw new RuntimeException("Passwort ist zu lang (maximal 72 Zeichen erlaubt)");
         }
+    }
+
+    private void validateCompanyName(String companyName) {
+        if (companyName == null || companyName.trim().isEmpty()) {
+            throw new RuntimeException("Firmenname darf nicht leer sein");
+        }
+        
+        String trimmedCompanyName = companyName.trim();
+        
+        if (trimmedCompanyName.length() < 2) {
+            throw new RuntimeException("Firmenname muss mindestens 2 Zeichen lang sein");
+        }
+        
+        if (trimmedCompanyName.length() > 100) {
+            throw new RuntimeException("Firmenname ist zu lang (maximal 100 Zeichen erlaubt)");
+        }
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Benutzer nicht gefunden"));
+    }
+
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 } 
