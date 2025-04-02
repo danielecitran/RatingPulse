@@ -26,11 +26,11 @@ public class UserController {
         try {
             if (request == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Request-Body darf nicht leer sein"));
+                    .body(new ErrorResponse("Bitte füllen Sie alle Pflichtfelder aus"));
             }
             if (request.email() == null || request.password() == null || request.companyName() == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("E-Mail, Passwort und Firmenname müssen angegeben werden"));
+                    .body(new ErrorResponse("Bitte füllen Sie alle Pflichtfelder aus"));
             }
             
             User user = userService.registerUser(request.email(), request.password(), request.companyName());
@@ -42,15 +42,15 @@ public class UserController {
         } catch (RuntimeException e) {
             String message = e.getMessage();
             if (message.contains("existiert bereits")) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(message));
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("Diese E-Mail-Adresse ist bereits registriert"));
             } else if (message.contains("E-Mail") || message.contains("Passwort")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(message));
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Ein unerwarteter Fehler ist aufgetreten"));
+                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Ein unerwarteter Fehler ist aufgetreten"));
+                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
         }
     }
 
@@ -59,11 +59,11 @@ public class UserController {
         try {
             if (request == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Request-Body darf nicht leer sein"));
+                    .body(new ErrorResponse("Bitte geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein"));
             }
             if (request.email() == null || request.password() == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("E-Mail und Passwort müssen angegeben werden"));
+                    .body(new ErrorResponse("Bitte geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein"));
             }
 
             User user = userService.loginUser(request.email(), request.password());
@@ -75,17 +75,17 @@ public class UserController {
         } catch (RuntimeException e) {
             String message = e.getMessage();
             if (message.contains("nicht gefunden")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(message));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Kein Konto mit dieser E-Mail-Adresse gefunden"));
             } else if (message.contains("Ungültiges Passwort")) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(message));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Das eingegebene Passwort ist nicht korrekt"));
             } else if (message.contains("E-Mail") || message.contains("Passwort")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(message));
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Ein unerwarteter Fehler ist aufgetreten"));
+                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Ein unerwarteter Fehler ist aufgetreten"));
+                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
         }
     }
 
@@ -96,7 +96,7 @@ public class UserController {
         try {
             if (request == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Request-Body darf nicht leer sein"));
+                    .body(new ErrorResponse("Bitte füllen Sie alle Pflichtfelder aus"));
             }
 
             // Token validieren und User extrahieren
@@ -114,7 +114,7 @@ public class UserController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Ein unerwarteter Fehler ist aufgetreten"));
+                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
         }
     }
 

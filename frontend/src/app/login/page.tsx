@@ -33,7 +33,7 @@ export default function LoginPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Login fehlgeschlagen');
+        throw new Error('Anmeldung fehlgeschlagen');
       }
 
       const data = await response.json();
@@ -42,7 +42,7 @@ export default function LoginPage() {
       // Zum Dashboard weiterleiten
       router.push('/dashboard');
     } catch (err) {
-      setError('Ungültige Anmeldedaten');
+      setError('Die eingegebenen Anmeldedaten sind nicht korrekt');
     }
   };
 

@@ -61,37 +61,37 @@ public class UserService {
 
     private void validateEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
-            throw new RuntimeException("E-Mail darf nicht leer sein");
+            throw new RuntimeException("Bitte geben Sie eine E-Mail-Adresse ein");
         }
         
         String trimmedEmail = email.trim();
         
         // Grundlegende E-Mail-Format-Validierung
         if (!trimmedEmail.contains("@")) {
-            throw new RuntimeException("Ungültiges E-Mail-Format: '@' fehlt");
+            throw new RuntimeException("Bitte geben Sie eine gültige E-Mail-Adresse ein (z.B. name@beispiel.de)");
         }
         
         // Prüfe auf gefährliche Zeichen
         if (trimmedEmail.contains("<") || trimmedEmail.contains(">") || 
             trimmedEmail.contains("'") || trimmedEmail.contains("\"") ||
             trimmedEmail.contains(";") || trimmedEmail.contains("--")) {
-            throw new RuntimeException("E-Mail enthält ungültige Zeichen");
+            throw new RuntimeException("Die E-Mail-Adresse enthält ungültige Zeichen");
         }
         
         // RFC 5322 kompatibles E-Mail-Format
         String emailPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         if (!trimmedEmail.matches(emailPattern)) {
-            throw new RuntimeException("Ungültiges E-Mail-Format. Erlaubte Zeichen sind: a-z, A-Z, 0-9, und !#$%&'*+/=?`{|}~^.-");
+            throw new RuntimeException("Bitte geben Sie eine gültige E-Mail-Adresse ein");
         }
         
         if (trimmedEmail.length() > 254) {
-            throw new RuntimeException("E-Mail-Adresse ist zu lang (maximal 254 Zeichen erlaubt)");
+            throw new RuntimeException("Die E-Mail-Adresse ist zu lang (maximal 254 Zeichen)");
         }
     }
 
     private void validatePassword(String password) {
         if (password == null || password.trim().isEmpty()) {
-            throw new RuntimeException("Passwort darf nicht leer sein");
+            throw new RuntimeException("Bitte geben Sie ein Passwort ein");
         }
         
         String trimmedPassword = password.trim();
@@ -100,31 +100,31 @@ public class UserService {
         if (trimmedPassword.contains("<") || trimmedPassword.contains(">") || 
             trimmedPassword.contains("'") || trimmedPassword.contains("\"") ||
             trimmedPassword.contains(";") || trimmedPassword.contains("--")) {
-            throw new RuntimeException("Passwort enthält ungültige Zeichen");
+            throw new RuntimeException("Das Passwort enthält ungültige Zeichen");
         }
         
         if (trimmedPassword.length() < 6) {
-            throw new RuntimeException("Passwort muss mindestens 6 Zeichen lang sein");
+            throw new RuntimeException("Das Passwort muss mindestens 6 Zeichen lang sein");
         }
         
         if (trimmedPassword.length() > 72) {
-            throw new RuntimeException("Passwort ist zu lang (maximal 72 Zeichen erlaubt)");
+            throw new RuntimeException("Das Passwort ist zu lang (maximal 72 Zeichen)");
         }
     }
 
     private void validateCompanyName(String companyName) {
         if (companyName == null || companyName.trim().isEmpty()) {
-            throw new RuntimeException("Firmenname darf nicht leer sein");
+            throw new RuntimeException("Bitte geben Sie einen Firmennamen ein");
         }
         
         String trimmedCompanyName = companyName.trim();
         
         if (trimmedCompanyName.length() < 2) {
-            throw new RuntimeException("Firmenname muss mindestens 2 Zeichen lang sein");
+            throw new RuntimeException("Der Firmenname muss mindestens 2 Zeichen lang sein");
         }
         
         if (trimmedCompanyName.length() > 100) {
-            throw new RuntimeException("Firmenname ist zu lang (maximal 100 Zeichen erlaubt)");
+            throw new RuntimeException("Der Firmenname ist zu lang (maximal 100 Zeichen)");
         }
     }
 

@@ -26,7 +26,7 @@ export default function RegisterPage() {
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Die Passwörter stimmen nicht überein');
+      setError('Die eingegebenen Passwörter stimmen nicht überein');
       return;
     }
 
@@ -44,7 +44,7 @@ export default function RegisterPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Registrierung fehlgeschlagen');
+        throw new Error('Bei der Registrierung ist ein Fehler aufgetreten');
       }
 
       const data = await response.json();
@@ -54,10 +54,10 @@ export default function RegisterPage() {
         setCookie('token', data.token, 7);
         router.push('/company-details');
       } else {
-        setError('Registrierung fehlgeschlagen: Kein Token erhalten');
+        setError('Bei der Registrierung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut');
       }
     } catch (err) {
-      setError('Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+      setError('Bei der Registrierung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut');
     }
   };
 

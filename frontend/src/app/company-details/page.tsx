@@ -38,12 +38,12 @@ export default function CompanyDetailsPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Speichern der Unternehmensinformationen fehlgeschlagen');
+        throw new Error('Beim Speichern der Unternehmensinformationen ist ein Fehler aufgetreten');
       }
 
       router.push('/dashboard');
     } catch (err) {
-      setError('Fehler beim Speichern der Unternehmensinformationen. Bitte versuchen Sie es erneut.');
+      setError('Beim Speichern der Unternehmensinformationen ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut');
     }
   };
 
@@ -80,7 +80,7 @@ export default function CompanyDetailsPage() {
               id="postalCode"
               type="text"
               required
-              pattern="[0-9]{5}"
+              pattern="[0-9]{4,5}"
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               value={formData.postalCode}
               onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
