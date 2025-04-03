@@ -13,6 +13,20 @@ export default function CompanyDetailsPage() {
   });
   const [error, setError] = useState('');
 
+  const validateAndFormatUrl = (url: string) => {
+    if (!url) return '';
+    
+    // Entferne Leerzeichen am Anfang und Ende
+    url = url.trim();
+    
+    // Wenn die URL nicht mit http:// oder https:// beginnt, füge https:// hinzu
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+    }
+    
+    return url;
+  };
+
   useEffect(() => {
     // Prüfen ob der Benutzer eingeloggt ist
     const token = document.cookie.split('; ').find(row => row.startsWith('token='));
@@ -25,8 +39,33 @@ export default function CompanyDetailsPage() {
     e.preventDefault();
     setError('');
 
+    // Client-seitige Validierung
+    if (!formData.street.trim()) {
+      setError('Bitte geben Sie eine Strasse und Hausnummer ein');
+      return;
+    }
+
+    if (!formData.postalCode.trim()) {
+      setError('Bitte geben Sie eine Postleitzahl ein');
+      return;
+    }
+
+    // Überprüfe, ob die Postleitzahl nur aus 4-5 Ziffern besteht
+    if (!/^\d{4,5}$/.test(formData.postalCode.trim())) {
+      setError('Bitte geben Sie eine gültige Postleitzahl ein (4-5 Ziffern)');
+      return;
+    }
+
+    if (!formData.city.trim()) {
+      setError('Bitte geben Sie eine Stadt ein');
+      return;
+    }
+
     try {
       const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+      
+      // Formatiere die Website-URL
+      const formattedWebsite = validateAndFormatUrl(formData.website);
       
       const response = await fetch('http://localhost:8080/api/users/company-details', {
         method: 'POST',
@@ -34,7 +73,10 @@ export default function CompanyDetailsPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          website: formattedWebsite,
+        }),
       });
 
       if (!response.ok) {
@@ -65,7 +107,6 @@ export default function CompanyDetailsPage() {
             <input
               id="street"
               type="text"
-              required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               value={formData.street}
               onChange={(e) => setFormData({ ...formData, street: e.target.value })}
@@ -79,8 +120,6 @@ export default function CompanyDetailsPage() {
             <input
               id="postalCode"
               type="text"
-              required
-              pattern="[0-9]{4,5}"
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               value={formData.postalCode}
               onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
@@ -94,7 +133,6 @@ export default function CompanyDetailsPage() {
             <input
               id="city"
               type="text"
-              required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               value={formData.city}
               onChange={(e) => setFormData({ ...formData, city: e.target.value })}
@@ -107,7 +145,8 @@ export default function CompanyDetailsPage() {
             </label>
             <input
               id="website"
-              type="url"
+              type="text"
+              placeholder="example.com"
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               value={formData.website}
               onChange={(e) => setFormData({ ...formData, website: e.target.value })}
