@@ -60,7 +60,7 @@ export default function CompanyDetailsPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="street" className="block text-sm font-medium mb-1">
-              Straße und Hausnummer
+              Strasse und Hausnummer
             </label>
             <input
               id="street"

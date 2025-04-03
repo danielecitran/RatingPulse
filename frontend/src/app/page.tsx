@@ -8,7 +8,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Verstehen Sie Ihre Kundenbewertungen mit KI
+              Verstehen Sie Ihre Kundenbewertungen mit Künstlicher Intelligenz
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
               RatingPulse analysiert automatisch Ihre Kundenbewertungen von Google und Trustpilot. 
@@ -45,7 +45,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-2">KI-gestützte Analyse</h3>
               <p className="text-muted-foreground">
-                Automatische Sentiment-Analyse und Zusammenfassungen Ihrer Kundenbewertungen mit OpenAI.
+                Automatische Sentiment-Analyse und Zusammenfassungen Ihrer Kundenbewertungen mit Künstlicher Intelligenz.
               </p>
             </div>
             <div className="p-6 bg-card rounded-lg border shadow-sm">
@@ -77,7 +77,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="bg-primary/5 py-20">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Bereit, Ihre Kundenbeziehungen zu verbessern?</h2>
+          <h2 className="text-3xl font-bold mb-4">Bereit, Ihre Kundschaft besser zu verbessern?</h2>
           <p className="text-xl text-muted-foreground mb-8">
             Starten Sie noch heute mit RatingPulse und gewinnen Sie wertvolle Einblicke in Ihre Kundenbewertungen.
           </p>
