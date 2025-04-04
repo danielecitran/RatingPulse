@@ -7,7 +7,6 @@ import KIErkenntnisse from '../../components/KIErkenntnisse';
 import BewertungsTimeline from '../../components/BewertungsTimeline';
 import KritischeBewertungen from '../../components/KritischeBewertungen';
 import KeywordCloud from '../../components/KeywordCloud';
-import AntwortTemplates from '../../components/AntwortTemplates';
 
 const Dashboard = () => {
   return (
@@ -29,11 +28,6 @@ const Dashboard = () => {
       {/* Kritische Bewertungen */}
       <div className="mb-8">
         <KritischeBewertungen />
-      </div>
-
-      {/* Antwort Templates */}
-      <div className="mb-8">
-        <AntwortTemplates />
       </div>
 
       {/* Bewertungs-Timeline */}

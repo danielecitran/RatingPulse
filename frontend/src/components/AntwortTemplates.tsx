@@ -69,12 +69,12 @@ const AntwortTemplates = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-6">Antwort-Templates</h2>
+      <h2 className="text-2xl font-bold mb-6">Antwortvorlagen</h2>
 
       {/* Template-Auswahl */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
-          <h3 className="text-lg font-semibold mb-4">Gespeicherte Templates</h3>
+          <h3 className="text-lg font-semibold mb-4">Gespeicherte Vorlagen</h3>
           <div className="space-y-4">
             {templates.map((template) => (
               <div
