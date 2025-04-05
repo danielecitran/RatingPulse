@@ -1,17 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Funktion zum Abrufen des Tokens aus den Cookies
+  const getToken = () => {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'token') {
+        return value;
+      }
+    }
+    return null;
+  };
+
+  // Überprüfe Token beim Laden der Seite
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      // Wenn Token vorhanden, zum Dashboard weiterleiten
+      window.location.replace('/dashboard');
+    }
+  }, []);
 
   const setCookie = (name: string, value: string, days: number) => {
     const date = new Date();
@@ -23,22 +43,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
-    // Client-seitige Validierung
-    if (!formData.email.trim()) {
-      setError('Bitte geben Sie Ihre E-Mail-Adresse ein');
-      return;
-    }
-
-    if (!formData.email.includes('@') || !formData.email.includes('.')) {
-      setError('Bitte geben Sie eine gültige E-Mail-Adresse ein');
-      return;
-    }
-
-    if (!formData.password) {
-      setError('Bitte geben Sie Ihr Passwort ein');
-      return;
-    }
+    setIsLoading(true);
 
     try {
       const response = await fetch('http://localhost:8080/api/users/login', {
@@ -49,17 +54,22 @@ export default function LoginPage() {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Anmeldung fehlgeschlagen');
+        throw new Error(data.message || 'Anmeldung fehlgeschlagen');
       }
 
-      const data = await response.json();
       // Token in einem Cookie speichern
-      setCookie('token', data.token, 7); // Token ist 7 Tage gültig
-      // Zum Dashboard weiterleiten
-      router.push('/dashboard');
+      setCookie('token', data.token, 7);
+      
+      // Direkt zum Dashboard navigieren
+      window.location.replace('/dashboard');
+
     } catch (err) {
+      console.error('Login-Fehler:', err);
       setError('Die eingegebenen Anmeldedaten sind nicht korrekt');
+      setIsLoading(false);
     }
   };
 
@@ -84,6 +94,7 @@ export default function LoginPage() {
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              disabled={isLoading}
             />
           </div>
 
@@ -98,12 +109,14 @@ export default function LoginPage() {
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary pr-10"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                disabled={isLoading}
               />
               {formData.password && (
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
+                  disabled={isLoading}
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -128,9 +141,10 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-primary text-primary-foreground py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+            className="w-full bg-primary text-primary-foreground py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
           >
-            Anmelden
+            {isLoading ? 'Wird angemeldet...' : 'Anmelden'}
           </button>
         </form>
 

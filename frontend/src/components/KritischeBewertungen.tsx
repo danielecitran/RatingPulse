@@ -71,8 +71,8 @@ const KritischeBewertungen = () => {
           <div key={bewertung.id} className="border-2 border-red-200 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                <span className="px-2 py-1 rounded text-sm bg-blue-100 text-blue-800">
-                  {bewertung.plattform}
+                <span className="px-2 py-1 rounded text-sm flex items-center">
+                  <img src="/images/Google_Logo.png" alt="Google Logo" className="w-4 h-4" />
                 </span>
                 <div className="flex">
                   {[...Array(5)].map((_, index) => (
