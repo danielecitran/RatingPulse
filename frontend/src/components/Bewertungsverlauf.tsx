@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 const data = [
   { name: 'Nov', Bewertung: 3.3 },
@@ -109,6 +109,12 @@ const Bewertungsverlauf = () => {
                 dx={-10}
                 padding={{ top: 20, bottom: 20 }}
               />
+              <ReferenceLine 
+                y={5} 
+                stroke="#fbbf24" 
+                strokeWidth={2}
+                strokeDasharray="4 4"
+              />
               <Tooltip 
                 contentStyle={{ 
                   backgroundColor: 'white', 
@@ -122,21 +128,6 @@ const Bewertungsverlauf = () => {
                 labelFormatter={(label) => monthsLong[label]}
                 separator=": "
               />
-              <Legend 
-                wrapperStyle={{ 
-                  fontSize: 14,
-                  color: '#666',
-                  paddingTop: '25px',
-                  fontWeight: 500,
-                  width: '100%',
-                  margin: '0 auto'
-                }}
-                verticalAlign="bottom"
-                align="center"
-                height={36}
-                iconSize={10}
-                iconType="circle"
-              />
               <Line 
                 type="monotone" 
                 dataKey="Bewertung" 
@@ -144,7 +135,6 @@ const Bewertungsverlauf = () => {
                 strokeWidth={3} 
                 dot={{ r: 6, fill: '#4a90e2', strokeWidth: 2, stroke: '#fff' }} 
                 activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff' }}
-                name="Durchschnittliche Bewertung"
               />
             </LineChart>
           </ResponsiveContainer>

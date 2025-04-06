@@ -11,6 +11,7 @@ import KeywordCloud from '../../components/KeywordCloud';
 
 export default function Dashboard() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [companyName, setCompanyName] = useState('');
   const router = useRouter();
 
   // Funktion zum Abrufen des Tokens aus den Cookies
@@ -25,12 +26,62 @@ export default function Dashboard() {
     return null;
   };
 
-  // Überprüfe Token beim Laden der Seite
+  // Funktion zum Dekodieren des JWT Tokens
+  const decodeToken = (token: string) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error('Fehler beim Dekodieren des Tokens:', error);
+      return null;
+    }
+  };
+
+  // Funktion zum Abrufen des Firmennamens
+  const fetchCompanyName = async () => {
+    const token = getToken();
+    if (!token) return;
+
+    // Versuche den Firmennamen direkt aus dem Token zu lesen
+    const decodedToken = decodeToken(token);
+    if (decodedToken && decodedToken.companyName) {
+      setCompanyName(decodedToken.companyName);
+      return;
+    }
+
+    // Fallback: Versuche den Firmennamen vom Backend zu holen
+    try {
+      const response = await fetch('http://localhost:8080/api/users/me', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token.trim()}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCompanyName(data.company_name);
+      } else {
+        console.error('Fehler beim Abrufen der Daten:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Fehler beim Abrufen des Firmennamens:', error);
+    }
+  };
+
+  // Überprüfe Token und hole Firmennamen beim Laden der Seite
   useEffect(() => {
     const token = getToken();
     if (!token) {
       // Wenn kein Token vorhanden, zur Login-Seite weiterleiten
       window.location.replace('/login');
+    } else {
+      fetchCompanyName();
     }
   }, []);
 
@@ -56,9 +107,9 @@ export default function Dashboard() {
                 className="flex items-center space-x-2 text-gray-700 hover:text-gray-900"
               >
                 <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center">
-                  <span className="text-sm font-medium">A</span>
+                  <span className="text-sm font-medium">{companyName ? companyName[0].toUpperCase() : 'A'}</span>
                 </div>
-                <span className="hidden sm:block">Account</span>
+                <span className="hidden sm:block">{companyName || 'Account'}</span>
                 <svg
                   className={`w-5 h-5 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
                   fill="none"
