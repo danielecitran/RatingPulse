@@ -4,7 +4,6 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 const data = [
-  { name: 'Nov', Bewertung: 3.3 },
   { name: 'Jan', Bewertung: 4.5 },
   { name: 'Feb', Bewertung: 4.7 },
   { name: 'Mär', Bewertung: 4.6 },
