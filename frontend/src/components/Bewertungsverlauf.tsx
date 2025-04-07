@@ -96,6 +96,13 @@ const Bewertungsverlauf = () => {
           <ResponsiveContainer width="100%" height="100%">
             {filteredData.length > 0 ? (
               <LineChart data={filteredData} margin={{ top: 20, right: 40, left: 0, bottom: 40 }}>
+                <defs>
+                  <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#1e40af" />
+                    <stop offset="50%" stopColor="#2563eb" />
+                    <stop offset="100%" stopColor="#60a5fa" />
+                  </linearGradient>
+                </defs>
                 <CartesianGrid strokeDasharray="0" stroke="#f0f0f0" />
                 <XAxis 
                   dataKey="name" 
@@ -136,9 +143,9 @@ const Bewertungsverlauf = () => {
                 <Line 
                   type="monotone" 
                   dataKey="Bewertung" 
-                  stroke="#4a90e2" 
-                  strokeWidth={3} 
-                  dot={{ r: 6, fill: '#4a90e2', strokeWidth: 2, stroke: '#fff' }} 
+                  stroke="url(#lineGradient)" 
+                  strokeWidth={4} 
+                  dot={{ r: 6, fill: '#2563eb', strokeWidth: 2, stroke: '#fff' }} 
                   activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff' }}
                 />
               </LineChart>

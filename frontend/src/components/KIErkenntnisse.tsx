@@ -19,7 +19,7 @@ const KIErkenntnisse = () => {
                 priority
               />
             </span>
-            <span className="text-sm text-blue-600 font-medium">
+            <span className="text-sm font-medium bg-gradient-to-r from-[#1e40af] via-[#2563eb] to-[#60a5fa] inline-block text-transparent bg-clip-text">
               Analyse mit KI
             </span>
           </div>

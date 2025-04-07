@@ -32,6 +32,13 @@ export default function Bewertungsverteilung() {
               margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
               barSize={40}
             >
+              <defs>
+                <linearGradient id="colorGradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#1e40af" />
+                  <stop offset="50%" stopColor="#2563eb" />
+                  <stop offset="100%" stopColor="#60a5fa" />
+                </linearGradient>
+              </defs>
               <CartesianGrid 
                 strokeDasharray="0" 
                 stroke="#f0f0f0" 
@@ -69,7 +76,7 @@ export default function Bewertungsverteilung() {
               />
               <Bar
                 dataKey="anzahl"
-                fill="#4a90e2"
+                fill="url(#colorGradient)"
                 radius={[4, 4, 4, 4]}
               />
             </BarChart>
@@ -77,18 +84,23 @@ export default function Bewertungsverteilung() {
         </div>
 
         {/* Statistik-Karten */}
-        <div className="grid grid-cols-2 gap-4 pt-2">
-          <div className="bg-blue-50 rounded-lg p-4">
-            <div className="text-sm font-medium text-gray-500">Durchschnitt</div>
-            <div className="text-2xl font-semibold text-blue-600 mt-1 flex items-center">
-              {(data.reduce((sum, item) => sum + (parseInt(item.sterne) * item.anzahl), 0) / 
-                data.reduce((sum, item) => sum + item.anzahl, 0)).toFixed(1)} ⭐
+        <div className="grid grid-cols-2 gap-6 pt-4">
+          <div className="flex flex-col bg-gray-50/80 backdrop-blur-md border border-gray-200/50 rounded-2xl p-6 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.12)]">
+            <span className="text-sm font-medium text-gray-900">Durchschnitt</span>
+            <div className="mt-2 flex items-center space-x-1">
+              <span className="text-4xl font-bold bg-gradient-to-r from-[#1e40af] via-[#2563eb] to-[#60a5fa] inline-block text-transparent bg-clip-text">
+                {(data.reduce((sum, item) => sum + (parseInt(item.sterne) * item.anzahl), 0) / 
+                  data.reduce((sum, item) => sum + item.anzahl, 0)).toFixed(1)}
+              </span>
+              <span className="text-2xl text-gray-400">⭐</span>
             </div>
           </div>
-          <div className="bg-green-50 rounded-lg p-4">
-            <div className="text-sm font-medium text-gray-500">5-Sterne Quote</div>
-            <div className="text-2xl font-semibold text-green-600 mt-1 flex items-center">
-              {Math.round((data[0].anzahl / data.reduce((sum, item) => sum + item.anzahl, 0)) * 100)}%
+          <div className="flex flex-col bg-gray-50/80 backdrop-blur-md border border-gray-200/50 rounded-2xl p-6 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.12)]">
+            <span className="text-sm font-medium text-gray-900">5-Sterne Quote</span>
+            <div className="mt-2">
+              <span className="text-4xl font-bold bg-gradient-to-r from-[#1e40af] via-[#2563eb] to-[#60a5fa] inline-block text-transparent bg-clip-text">
+                {Math.round((data[0].anzahl / data.reduce((sum, item) => sum + item.anzahl, 0)) * 100)}%
+              </span>
             </div>
           </div>
         </div>
