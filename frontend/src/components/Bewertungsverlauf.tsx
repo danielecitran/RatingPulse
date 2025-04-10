@@ -113,8 +113,8 @@ const Bewertungsverlauf = () => {
                   padding={{ left: 30, right: 30 }}
                 />
                 <YAxis 
-                  domain={[1, 6]} 
-                  ticks={[1, 2, 3, 4, 5, 6]} 
+                  domain={[1, 5]} 
+                  ticks={[1, 2, 3, 4, 5]} 
                   tick={{ fontSize: 14, fill: '#666' }} 
                   axisLine={{ stroke: '#e0e0e0' }} 
                   tickLine={false}

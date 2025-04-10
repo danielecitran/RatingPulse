@@ -71,7 +71,7 @@ export default function Bewertungsverteilung() {
                         <div className="mb-1">
                           {Array(sternCount).fill('⭐').join('')}
                         </div>
-                        <div>
+                        <div className="text-gray-600 text-sm">
                           {payload[0].value} Bewertung{payload[0].value !== 1 ? 'en' : ''}
                         </div>
                       </div>
