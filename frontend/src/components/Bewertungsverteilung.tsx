@@ -4,11 +4,11 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 
 const data = [
-  { sterne: '5 ⭐', anzahl: 50 },
-  { sterne: '4 ⭐', anzahl: 30 },
-  { sterne: '3 ⭐', anzahl: 15 },
-  { sterne: '2 ⭐', anzahl: 8 },
-  { sterne: '1 ⭐', anzahl: 2 },
+  { sterne: '5 ⭐', anzahl: 50, display: '⭐⭐⭐⭐⭐' },
+  { sterne: '4 ⭐', anzahl: 30, display: '⭐⭐⭐⭐' },
+  { sterne: '3 ⭐', anzahl: 15, display: '⭐⭐⭐' },
+  { sterne: '2 ⭐', anzahl: 8, display: '⭐⭐' },
+  { sterne: '1 ⭐', anzahl: 2, display: '⭐' },
 ];
 
 export default function Bewertungsverteilung() {
@@ -63,16 +63,22 @@ export default function Bewertungsverteilung() {
               />
               <Tooltip
                 cursor={{ fill: '#f3f4f6' }}
-                contentStyle={{
-                  backgroundColor: 'white',
-                  border: 'none',
-                  borderRadius: '12px',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                  padding: '12px'
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    const sternCount = parseInt(payload[0].payload.sterne);
+                    return (
+                      <div className="bg-white border-none rounded-xl shadow-lg p-3">
+                        <div className="mb-1">
+                          {Array(sternCount).fill('⭐').join('')}
+                        </div>
+                        <div>
+                          {payload[0].value} Bewertung{payload[0].value !== 1 ? 'en' : ''}
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
                 }}
-                formatter={(value) => [`${value} Bewertungen`]}
-                labelFormatter={(label) => `${label}`}
-                separator=""
               />
               <Bar
                 dataKey="anzahl"
