@@ -11,6 +11,7 @@ import KritischeBewertungen from '@/components/KritischeBewertungen';
 export default function Dashboard() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [companyName, setCompanyName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const router = useRouter();
 
   // Funktion zum Abrufen des Tokens aus den Cookies
@@ -40,7 +41,7 @@ export default function Dashboard() {
     }
   };
 
-  // Funktion zum Abrufen des Firmennamens
+  // Funktion zum Abrufen des Firmennamens und der E-Mail
   const fetchCompanyName = async () => {
     const token = getToken();
     if (!token) return;
@@ -49,10 +50,13 @@ export default function Dashboard() {
     const decodedToken = decodeToken(token);
     if (decodedToken && decodedToken.companyName) {
       setCompanyName(decodedToken.companyName);
-      return;
+      if (decodedToken.email) {
+        setUserEmail(decodedToken.email);
+        return;
+      }
     }
 
-    // Fallback: Versuche den Firmennamen vom Backend zu holen
+    // Fallback: Versuche den Firmennamen und die E-Mail vom Backend zu holen
     try {
       const response = await fetch('http://localhost:8080/api/users/me', {
         method: 'GET',
@@ -65,11 +69,12 @@ export default function Dashboard() {
       if (response.ok) {
         const data = await response.json();
         setCompanyName(data.company_name);
+        setUserEmail(data.email);
       } else {
         console.error('Fehler beim Abrufen der Daten:', response.status, response.statusText);
       }
     } catch (error) {
-      console.error('Fehler beim Abrufen des Firmennamens:', error);
+      console.error('Fehler beim Abrufen der Benutzerdaten:', error);
     }
   };
 
@@ -141,7 +146,7 @@ export default function Dashboard() {
                 <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg py-1 z-10 border border-gray-100 transform transition-all duration-200 ease-out">
                   <div className="px-4 py-3 border-b border-gray-100">
                     <p className="text-sm font-medium text-gray-900">{companyName}</p>
-                    <p className="text-xs text-gray-500">mail@example.com</p>
+                    <p className="text-xs text-gray-500">{userEmail}</p>
                   </div>
                   <div className="py-1">
                     <button
