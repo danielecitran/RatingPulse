@@ -120,9 +120,9 @@ const BewertungsTimeline = () => {
 
         <div className="space-y-4">
           {mockBewertungen.slice(0, visibleBewertungen).map((bewertung) => (
-            <div key={bewertung.id} className="border border-gray-100 rounded-xl p-5 hover:shadow-md transition-all duration-200 bg-white">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
+            <div key={bewertung.id} className="border border-gray-200 rounded-xl p-5 hover:shadow-lg transition-all duration-200 bg-gradient-to-br from-white via-gray-50 to-gray-100 backdrop-blur-xl shadow-lg">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-2">
                   <div className="flex items-center">
                     <img src="/images/Google_Logo.png" alt="Google Logo" className="w-5 h-5" />
                   </div>
@@ -165,7 +165,7 @@ const BewertungsTimeline = () => {
                 </div>
               </div>
               
-              <p className="text-gray-600 mb-4 leading-relaxed">{bewertung.text}</p>
+              <p className="text-gray-600 mb-2 leading-relaxed">{bewertung.text}</p>
 
               {bewertung.antwort && (
                 <div className="bg-gray-50 p-4 rounded-lg mb-4 border border-gray-100">
@@ -219,4 +219,4 @@ const BewertungsTimeline = () => {
   );
 };
 
-export default BewertungsTimeline; 
+export default BewertungsTimeline;

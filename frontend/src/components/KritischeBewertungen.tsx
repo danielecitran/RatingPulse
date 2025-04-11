@@ -172,7 +172,7 @@ const KritischeBewertungen = () => {
 
         <div className="space-y-4">
           {mockKritischeBewertungen.slice(0, visibleBewertungen).map((bewertung) => (
-            <div key={bewertung.id} className="border border-gray-100 rounded-xl p-5 hover:shadow-md transition-all duration-200 bg-white">
+            <div key={bewertung.id} className="border border-gray-200 rounded-xl p-5 hover:shadow-xl hover:scale-[1.02] hover:border-gray-200 transition-all duration-300 bg-gradient-to-br from-white via-gray-50 to-gray-100 backdrop-blur-xl shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="flex items-center">
@@ -192,7 +192,7 @@ const KritischeBewertungen = () => {
                       </svg>
                     ))}
                   </div>
-                  <span className="px-3 py-1.5 bg-gradient-to-r from-red-50 to-red-100/80 text-red-600/90 rounded-lg text-sm font-medium border border-red-100/20 shadow-sm backdrop-blur-sm">
+                  <span className="px-3 py-1.5 bg-gradient-to-r from-red-50 to-red-100/80 text-red-600/90 rounded-lg text-sm font-medium border border-red-100/20 shadow-sm">
                     {bewertung.kategorie}
                   </span>
                 </div>
@@ -234,7 +234,10 @@ const KritischeBewertungen = () => {
                       Analyse mit KI
                     </h3>
                   </div>
-                  <p className="text-sm text-red-800/70">{bewertung.kiAnalyse}</p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium">Hauptprobleme: </span>
+                    {bewertung.kiAnalyse?.replace('Hauptprobleme:', '') || 'Keine KI-Analyse verfügbar'}
+                  </p>
                 </div>
               </div>
 
@@ -281,4 +284,4 @@ const KritischeBewertungen = () => {
   );
 };
 
-export default KritischeBewertungen; 
+export default KritischeBewertungen;
