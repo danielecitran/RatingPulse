@@ -13,13 +13,14 @@ export default function CompanyDetailsPage() {
   });
   const [error, setError] = useState('');
 
+  // Funktion womit die URL formatiert wird
   const validateAndFormatUrl = (url: string) => {
     if (!url) return '';
     
     // Entferne Leerzeichen am Anfang und Ende
     url = url.trim();
     
-    // Wenn die URL nicht mit http:// oder https:// beginnt, füge https:// hinzu
+    // Wenn die URL nicht mit http:// oder https:// beginnt, wird https:// am Anfang hinzugefügt
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
       url = 'https://' + url;
     }
@@ -28,7 +29,7 @@ export default function CompanyDetailsPage() {
   };
 
   useEffect(() => {
-    // Prüfen ob der Benutzer eingeloggt ist
+    // Prüfen ob schon ein Cookie beim Benutzer existiert
     const token = document.cookie.split('; ').find(row => row.startsWith('token='));
     if (!token) {
       router.push('/login');
@@ -50,7 +51,7 @@ export default function CompanyDetailsPage() {
       return;
     }
 
-    // Überprüfe, ob die Postleitzahl nur aus 4-5 Ziffern besteht
+    // Überprüfe, ob die Postleitzahl nur aus 4 oder 5 Ziffern besteht (-> CH/AT/DE)
     if (!/^\d{4,5}$/.test(formData.postalCode.trim())) {
       setError('Bitte geben Sie eine gültige Postleitzahl ein (4-5 Ziffern)');
       return;
@@ -64,7 +65,7 @@ export default function CompanyDetailsPage() {
     try {
       const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
       
-      // Formatiere die Website-URL
+      // Funktion womit die URL formatiert wird wird aufgerufen
       const formattedWebsite = validateAndFormatUrl(formData.website);
       
       const response = await fetch('http://localhost:8080/api/users/company-details', {
@@ -141,7 +142,7 @@ export default function CompanyDetailsPage() {
 
           <div>
             <label htmlFor="website" className="block text-sm font-medium mb-1">
-              Website (optional)
+              Webseite (optional)
             </label>
             <input
               id="website"
@@ -169,4 +170,4 @@ export default function CompanyDetailsPage() {
       </div>
     </div>
   );
-} 
+}

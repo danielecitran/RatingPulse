@@ -11,18 +11,18 @@ export default function Home() {
               Verstehen Sie Ihre Kundenbewertungen mit Künstlicher Intelligenz
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              RatingPulse analysiert automatisch Ihre Kundenbewertungen von Google und Trustpilot. 
+              RatingPulse analysiert automatisch Ihre Kundenbewertungen von Google.
               Erhalten Sie wertvolle Einblicke und verbessern Sie Ihre Kundenbeziehungen.
             </p>
             <div className="flex gap-4 justify-center">
-              <Link 
-                href="/register" 
+              <Link
+                href="/register"
                 className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
               >
                 Jetzt kostenlos testen
               </Link>
-              <Link 
-                href="/login" 
+              <Link
+                href="/login"
                 className="border border-input bg-background px-8 py-3 rounded-lg font-medium hover:bg-accent transition-colors"
               >
                 Anmelden
@@ -56,7 +56,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Echtzeit-Updates</h3>
               <p className="text-muted-foreground">
-                Automatische Synchronisation mit Google Reviews und Trustpilot für aktuelle Bewertungen.
+                Automatische Synchronisation mit Google Reviews für aktuelle Bewertungen.
               </p>
             </div>
             <div className="p-6 bg-card rounded-lg border shadow-sm">
@@ -77,12 +77,12 @@ export default function Home() {
       {/* CTA Sektion */}
       <section className="bg-primary/5 py-20">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Bereit, Ihre Kundschaft besser zu verbessern?</h2>
+          <h2 className="text-3xl font-bold mb-4">Bereit, Ihre Kundschaft besser zu verstehen?</h2>
           <p className="text-xl text-muted-foreground mb-8">
             Starten Sie noch heute mit RatingPulse und gewinnen Sie wertvolle Einblicke in Ihre Kundenbewertungen.
           </p>
-          <Link 
-            href="/register" 
+          <Link
+            href="/register"
             className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors inline-block"
           >
             Kostenlos registrieren

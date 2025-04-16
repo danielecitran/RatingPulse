@@ -17,7 +17,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       </main>
       <footer className="border-t mt-auto">
         <div className="container mx-auto px-4 py-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} RatingPulse. Alle Rechte vorbehalten.
+          © {new Date().getFullYear()} RatingPulse
         </div>
       </footer>
     </div>

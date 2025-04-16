@@ -14,7 +14,7 @@ export default function Dashboard() {
   const [userEmail, setUserEmail] = useState('');
   const router = useRouter();
 
-  // Funktion zum Abrufen des Tokens aus den Cookies
+  // Funktion zum Abrufen des Tokens aus dem Cookie
   const getToken = () => {
     const cookies = document.cookie.split(';');
     for (let cookie of cookies) {
@@ -82,7 +82,7 @@ export default function Dashboard() {
   useEffect(() => {
     const token = getToken();
     if (!token) {
-      // Wenn kein Token vorhanden, zur Login-Seite weiterleiten
+      // Wenn kein Token vorhanden wird zur Login Seite weitergeleitet
       window.location.replace('/login');
     } else {
       fetchCompanyName();
@@ -98,7 +98,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Moderner Header mit Account-Sektion */}
+      {/* Header mit Account-Sektion */}
       <div className="bg-white shadow-md border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -193,7 +193,7 @@ export default function Dashboard() {
             <KritischeBewertungen />
           </div>
 
-          {/* Bewertungs-Timeline */}
+          {/* Alle Bewertungen (Bewertungs-Timeline) */}
           <div className="mt-8">
             <BewertungsTimeline />
           </div>

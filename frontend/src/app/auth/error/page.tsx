@@ -16,7 +16,7 @@ export default function AuthError() {
           </h2>
           <p className="text-gray-600 mb-4">
             {error === 'Configuration' 
-              ? 'Es gibt ein Problem mit der Server-Konfiguration. Bitte versuchen Sie es später erneut.'
+              ? 'Es gibt ein Problem mit dem Server. Bitte versuchen Sie es später erneut.'
               : 'Bei der Anmeldung ist ein Fehler aufgetreten.'}
           </p>
           <Link
@@ -29,4 +29,4 @@ export default function AuthError() {
       </div>
     </div>
   );
-} 
+}

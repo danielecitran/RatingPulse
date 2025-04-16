@@ -87,7 +87,7 @@ export default function RegisterPage() {
 
       const data = await response.json();
       
-      // Token speichern und zur Unternehmensdetails-Seite weiterleiten
+      // Token wird gespeichert und zur Unternehmensdetails-Seite weitergeleitet
       if (data.token) {
         setCookie('token', data.token, 7);
         router.push('/company-details');
@@ -109,7 +109,7 @@ export default function RegisterPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold">Konto erstellen</h1>
           <p className="text-muted-foreground mt-2">
-            Registrieren Sie sich, um RatingPulse zu nutzen
+            Registrieren Sie sich, um Ihre Kundenbewertungen zu analysieren
           </p>
         </div>
 
@@ -229,4 +229,4 @@ export default function RegisterPage() {
       </div>
     </div>
   );
-} 
+}

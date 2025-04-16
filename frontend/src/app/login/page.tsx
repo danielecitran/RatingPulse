@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Funktion zum Abrufen des Tokens aus den Cookies
+  // Funktion zum Abrufen des Tokens aus dem Cookie
   const getToken = () => {
     const cookies = document.cookie.split(';');
     for (let cookie of cookies) {
@@ -28,7 +28,7 @@ export default function LoginPage() {
   useEffect(() => {
     const token = getToken();
     if (token) {
-      // Wenn Token vorhanden, zum Dashboard weiterleiten
+      // Wenn Token vorhanden wird zum Dashboard weitergeleitet
       window.location.replace('/dashboard');
     }
   }, []);
@@ -63,7 +63,7 @@ export default function LoginPage() {
       // Token in einem Cookie speichern
       setCookie('token', data.token, 7);
       
-      // Direkt zum Dashboard navigieren
+      // Dashboard weiterleitung
       window.location.replace('/dashboard');
 
     } catch (err) {
@@ -157,4 +157,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-} 
+}
