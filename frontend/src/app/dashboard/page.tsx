@@ -150,7 +150,10 @@ export default function Dashboard() {
                   </div>
                   <div className="py-1">
                     <button
-                      onClick={() => setIsDropdownOpen(false)}
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        router.push('/settings');
+                      }}
                       className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150"
                     >
                       <svg className="w-4 h-4 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

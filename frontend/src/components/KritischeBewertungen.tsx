@@ -172,17 +172,17 @@ const KritischeBewertungen = () => {
 
         <div className="space-y-4">
           {mockKritischeBewertungen.slice(0, visibleBewertungen).map((bewertung) => (
-            <div key={bewertung.id} className="border border-gray-200 rounded-xl p-5 hover:shadow-xl hover:scale-[1.02] hover:border-gray-200 transition-all duration-300 bg-gradient-to-br from-white via-gray-50 to-gray-100 backdrop-blur-xl shadow-lg">
+            <div key={bewertung.id} className="border border-gray-100 rounded-lg p-4 bg-white hover:bg-gray-50 transition-colors">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
                   <div className="flex items-center">
-                    <img src="/images/Google_Logo.png" alt="Google Logo" className="w-5 h-5" />
+                    <img src="/images/Google_Logo.png" alt="Google Logo" className="w-4 h-4" />
                   </div>
                   <div className="flex">
                     {[...Array(5)].map((_, index) => (
                       <svg
                         key={index}
-                        className={`w-5 h-5 ${
+                        className={`w-4 h-4 ${
                           index < bewertung.sterne ? 'text-yellow-400' : 'text-gray-200'
                         }`}
                         fill="currentColor"
@@ -192,25 +192,25 @@ const KritischeBewertungen = () => {
                       </svg>
                     ))}
                   </div>
-                  <span className="px-3 py-1.5 bg-gradient-to-r from-red-50 to-red-100/80 text-red-600/90 rounded-lg text-sm font-medium border border-red-100/20 shadow-sm">
+                  <span className="px-2 py-1 bg-red-50 text-red-600 rounded text-sm font-medium">
                     {bewertung.kategorie}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => handleTemplateClick(bewertung)}
-                    className="px-4 py-2 text-sm bg-white hover:bg-gray-50 rounded-lg flex items-center space-x-2 transition-all duration-200 border border-gray-200 shadow-sm hover:shadow"
+                    className="px-3 py-1.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md flex items-center space-x-2 hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm"
                   >
-                    <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                     </svg>
-                    <span className="text-gray-700">Antwortvorlage</span>
+                    <span className="font-medium">Antwortvorlage</span>
                   </button>
                   <a
                     href={bewertung.bewertungsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2 text-sm bg-primary hover:bg-primary/90 text-white rounded-lg flex items-center space-x-2 transition-all duration-200 shadow-sm hover:shadow"
+                    className="px-3 py-1.5 text-sm bg-primary text-white rounded-md flex items-center space-x-2 hover:bg-primary/90 transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -220,20 +220,18 @@ const KritischeBewertungen = () => {
                 </div>
               </div>
               
-              <p className="text-gray-600 mb-4 leading-relaxed">{bewertung.text}</p>
+              <p className="text-gray-600 mb-3 text-sm leading-relaxed">{bewertung.text}</p>
 
-              <div className="bg-gradient-to-br from-red-500/5 to-red-500/10 backdrop-blur-xl p-4 rounded-lg mb-4 border border-red-100/20 shadow-sm">
+              <div className="flex items-start gap-2 mb-3 bg-gradient-to-r from-blue-50 to-violet-50 p-3 rounded-lg border border-blue-100/50">
+                <img 
+                  src="/images/sparkle-transparent.png" 
+                  alt="KI Icon" 
+                  className="w-4 h-4 object-contain mt-0.5" 
+                />
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <img 
-                      src="/images/sparkle-transparent.png" 
-                      alt="KI Icon" 
-                      className="w-5 h-5 object-contain" 
-                    />
-                    <h3 className="text-sm font-medium bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-                      Analyse mit KI
-                    </h3>
-                  </div>
+                  <h3 className="text-sm font-medium bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent mb-1">
+                    Analyse mit KI
+                  </h3>
                   <p className="text-sm text-gray-600">
                     <span className="font-medium">Hauptprobleme: </span>
                     {bewertung.kiAnalyse?.replace('Hauptprobleme:', '') || 'Keine KI-Analyse verfügbar'}
@@ -253,15 +251,10 @@ const KritischeBewertungen = () => {
           <div className="mt-8 text-center">
             <button
               onClick={handleMehrLaden}
-              className="px-6 py-2.5 bg-white hover:bg-gray-50 text-gray-700 rounded-lg transition-all duration-200 flex items-center space-x-2 mx-auto border border-gray-200 shadow-sm hover:shadow group"
+              className="px-6 py-2.5 bg-white text-gray-700 rounded-lg flex items-center space-x-2 mx-auto border border-gray-200 shadow-sm"
             >
               <span className="font-medium">Weitere Bewertungen laden</span>
-              <svg 
-                className="w-4 h-4 group-hover:translate-y-0.5 transition-transform duration-200" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
