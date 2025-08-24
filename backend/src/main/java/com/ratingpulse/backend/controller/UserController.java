@@ -3,119 +3,54 @@ package com.ratingpulse.backend.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ratingpulse.backend.model.User;
+import com.ratingpulse.backend.service.JwtService;
 import com.ratingpulse.backend.service.UserService;
+import com.ratingpulse.backend.dto.RegisterRequest;
+import com.ratingpulse.backend.dto.LoginRequest;
+import com.ratingpulse.backend.dto.LoginResponse;
+import com.ratingpulse.backend.dto.ErrorResponse;
+import com.ratingpulse.backend.dto.CompanyDetailsRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
+    private final JwtService jwtService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody(required = false) RegisterRequest request) {
-        try {
-            if (request == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Bitte füllen Sie alle Pflichtfelder aus"));
-            }
-            if (request.email() == null || request.password() == null || request.companyName() == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Bitte füllen Sie alle Pflichtfelder aus"));
-            }
-            
-            User user = userService.registerUser(request.email(), request.password(), request.companyName());
-            
-            // JWT Token generieren
-            String token = generateToken(user);
-            
-            return ResponseEntity.ok(new LoginResponse(user.getId(), user.getEmail(), user.getCompanyName(), token));
-        } catch (RuntimeException e) {
-            String message = e.getMessage();
-            if (message.contains("existiert bereits")) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("Diese E-Mail-Adresse ist bereits registriert"));
-            } else if (message.contains("E-Mail") || message.contains("Passwort")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(message));
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
-        }
+    public ResponseEntity<LoginResponse> registerUser(@RequestBody RegisterRequest request) {
+        User user = userService.registerUser(request.getEmail(), request.getPassword(), request.getCompanyName());
+        String token = jwtService.generateToken(user);
+        return ResponseEntity.ok(new LoginResponse(user.getId(), user.getEmail(), user.getCompanyName(), token));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody(required = false) LoginRequest request) {
-        try {
-            if (request == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Bitte geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein"));
-            }
-            if (request.email() == null || request.password() == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Bitte geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein"));
-            }
-
-            User user = userService.loginUser(request.email(), request.password());
-            
-            // JWT Token generieren
-            String token = generateToken(user);
-            
-            return ResponseEntity.ok(new LoginResponse(user.getId(), user.getEmail(), user.getCompanyName(), token));
-        } catch (RuntimeException e) {
-            String message = e.getMessage();
-            if (message.contains("nicht gefunden")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Kein Konto mit dieser E-Mail-Adresse gefunden"));
-            } else if (message.contains("Ungültiges Passwort")) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Das eingegebene Passwort ist nicht korrekt"));
-            } else if (message.contains("E-Mail") || message.contains("Passwort")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(message));
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
-        }
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest request) {
+        User user = userService.loginUser(request.getEmail(), request.getPassword());
+        String token = jwtService.generateToken(user);
+        return ResponseEntity.ok(new LoginResponse(user.getId(), user.getEmail(), user.getCompanyName(), token));
     }
 
     @PostMapping("/company-details")
-    public ResponseEntity<?> updateCompanyDetails(
-            @RequestBody CompanyDetailsRequest request,
-            @RequestHeader("Authorization") String token) {
-        try {
-            if (request == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse("Bitte füllen Sie alle Pflichtfelder aus"));
-            }
-
-            // Token validieren und User extrahieren
-            String email = extractEmailFromToken(token);
-            User user = userService.findByEmail(email);
-            
-            // Unternehmensdetails aktualisieren
-            user.setStreet(request.street());
-            user.setPostalCode(request.postalCode());
-            user.setCity(request.city());
-            user.setWebsite(request.website());
-            
-            userService.updateUser(user);
-            
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut"));
-        }
+    public ResponseEntity<Void> updateCompanyDetails(@RequestBody CompanyDetailsRequest request, @RequestHeader("Authorization") String token) {
+        String email = extractEmailFromToken(token);
+        User user = userService.findByEmail(email);
+        user.setStreet(request.getStreet());
+        user.setPostalCode(request.getPostalCode());
+        user.setCity(request.getCity());
+        user.setWebsite(request.getWebsite());
+        userService.updateUser(user);
+        return ResponseEntity.ok().build();
     }
 
     private String extractEmailFromToken(String token) {
@@ -147,48 +82,4 @@ public class UserController {
             throw new RuntimeException("Fehler bei der Token-Verarbeitung: " + e.getMessage());
         }
     }
-
-    private String generateToken(User user) {
-        // Token-Header
-        Map<String, Object> header = new HashMap<>();
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
-
-        // Token-Payload
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", user.getEmail());
-        claims.put("userId", user.getId());
-        claims.put("companyName", user.getCompanyName());
-        claims.put("exp", System.currentTimeMillis() + (7 * 24 * 60 * 60 * 1000)); // 7 Tage
-
-        // Secret Key (in der Produktion sollte dies sicher gespeichert werden)
-        String secret = "your-secret-key-here";
-
-        try {
-            // Header und Payload in Base64 kodieren
-            String headerBase64 = Base64.getUrlEncoder().withoutPadding().encodeToString(
-                new ObjectMapper().writeValueAsString(header).getBytes());
-            String payloadBase64 = Base64.getUrlEncoder().withoutPadding().encodeToString(
-                new ObjectMapper().writeValueAsString(claims).getBytes());
-
-            // Signatur mit dem Secret Key erstellen
-            javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
-            javax.crypto.spec.SecretKeySpec secretKeySpec = new javax.crypto.spec.SecretKeySpec(
-                secret.getBytes(), "HmacSHA256");
-            mac.init(secretKeySpec);
-            String signature = Base64.getUrlEncoder().withoutPadding().encodeToString(
-                mac.doFinal((headerBase64 + "." + payloadBase64).getBytes()));
-
-            // Token zusammenbauen
-            return headerBase64 + "." + payloadBase64 + "." + signature;
-        } catch (Exception e) {
-            throw new RuntimeException("Fehler bei der Token-Generierung: " + e.getMessage());
-        }
-    }
-
-    private record RegisterRequest(String email, String password, String companyName) {}
-    private record LoginRequest(String email, String password) {}
-    private record LoginResponse(Long id, String email, String companyName, String token) {}
-    private record ErrorResponse(String message) {}
-    private record CompanyDetailsRequest(String street, String postalCode, String city, String website) {}
 } 
