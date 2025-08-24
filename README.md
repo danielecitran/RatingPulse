@@ -39,11 +39,3 @@ RatingPulse ist eine Webanwendung zur Analyse von Kundenbewertungen aus Google i
 ## Status
 
 Dieses Projekt befindet sich noch in der Entwicklung und ist nicht abgeschlossen.
-
-## Mitwirken
-
-Beiträge sind willkommen! Bitte erstelle einen Fork des Repositories und reiche einen Pull-Request ein.
-
-## Lizenz
-
-Dieses Projekt steht unter der MIT-Lizenz.
